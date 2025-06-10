@@ -53,7 +53,7 @@ body {
   margin: 60px auto;
   background-color: #ffffff;
   border: 2px solid #d0e6a5;
-  padding: 30px;
+  padding: 40px 50px;
   border-radius: 10px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   position: relative; /* // UPDATED: for absolute positioned logout */
@@ -100,6 +100,7 @@ body {
 .delete-btn { /* // MOVED AND REUSED */
   margin-top: 10px;
   background-color: red;
+  margin-right: 10px;
   color: white;
   border: none;
   padding: 8px 14px;

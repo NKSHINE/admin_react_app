@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 
 function Register() {
   const [form, setForm] = useState({ name: "", address: "", email: "", password: "" });
-
+  const [message, setMessage] = useState("");
+  const [messageColor, setMessageColor] = useState("");
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
@@ -12,15 +13,19 @@ function Register() {
   
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
-      alert("Please enter a valid email address.");
+      setMessage("Please enter a valid email address.");
+      setMessageColor("red");
       return;
     }
   
     try {
       await axios.post("http://localhost:5000/api/register", form);
-      alert("Registered successfully");
+      setMessage("Registered successfully!");
+      setMessageColor("green");
+
     } catch (error) {
-      alert("Registration failed. Please try again.");
+      setMessage("Registration failed. Please try again.");
+      setMessageColor("red");
     }
   };
 
@@ -28,6 +33,7 @@ function Register() {
   return (
     <div className="register-container">
       <h2>Register</h2>
+      {message && <p style={{ color: messageColor }}>{message}</p>}
       <form onSubmit={handleSubmit} className="register-form">
         <input name="name" placeholder="Name" onChange={handleChange} required />
         <input name="address" placeholder="Address" onChange={handleChange} required />

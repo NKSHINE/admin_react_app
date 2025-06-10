@@ -4,22 +4,31 @@ import axios from "axios";
 function UserDashboard({ user,setUser }) {
   const [name, setName] = useState(user.name);
   const [address, setAddress] = useState(user.address);
-  
+  const [message, setMessage] = useState("");
+  const [messageColor, setMessageColor] = useState("");
+
 
   const update = () => {
     axios.put("http://localhost:5000/api/update", {
       email: user.email,
       name,
       address,
-    }).then(() => alert("Details updated"));
+    })
+    .then(() => {
+      setMessage("Details updated successfully!");
+      setMessageColor("green");
+    })
+    .catch(() => {
+      setMessage("Failed to update details.");
+      setMessageColor("red");
+    });
   };
+
   const handleLogout = async () => {
     try {
       await axios.post("http://localhost:5000/api/logout", {}, );
       setUser(null);
     } catch (err) {
-      
-      
       alert(err);
     }
   };
@@ -27,7 +36,7 @@ function UserDashboard({ user,setUser }) {
   return (
     <div className="userdashboard-container">
       <h2>Welcome {user.name}</h2>
-      
+       {message && <p style={{ color: messageColor }}>{message}</p>}
       <input value={name} onChange={e => setName(e.target.value)} />
       <input value={address} onChange={e => setAddress(e.target.value)} />
       <button onClick={update}>Update</button>

@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import UserDashboard from "./UserDashboard";
 import axios from "axios";
 import "../App.css";
 
@@ -7,7 +8,7 @@ import "../App.css";
 function AdminDashboard({ user, setUser }) {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
-
+  const [updatingUser, setUpdatingUser] = useState(null);
   const fetchUsers = useCallback(() => {
     axios
       .get(
@@ -23,19 +24,24 @@ function AdminDashboard({ user, setUser }) {
     fetchUsers();
   }, [fetchUsers]);
 
+  if (updatingUser) {
+    return <UserDashboard user={updatingUser} setUser={setUser} />;
+  }
+
+
 
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
+   
       axios
         .delete(`http://localhost:5000/api/users/${id}`, {
           params: { email: user.email, isAdmin: user.isAdmin },
         })
         .then(() => {
-          alert("User deleted");
+          
           fetchUsers();
         })
         .catch(() => alert("Failed to delete user"));
-    }
+    
   };
 
   const handleLogout = async () => {
@@ -62,13 +68,7 @@ function AdminDashboard({ user, setUser }) {
         </div>
       </div>
 
-      <input
-        type="text"
-        placeholder="Search by name, email or address"
-        className="search-bar"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <input type="text" placeholder="Search by name, email or address" className="search-bar" value={search} onChange={(e) => setSearch(e.target.value)}/>
 
       <div className="card-container">
         {filteredUsers.map((u) => (
@@ -76,12 +76,8 @@ function AdminDashboard({ user, setUser }) {
             <p><strong>Name:</strong> {u.name}</p>
             <p><strong>Email:</strong> {u.email}</p>
             <p><strong>Address:</strong> {u.address}</p>
-            <button
-              className="delete-btn"
-              onClick={() => handleDelete(u._id)}
-            >
-              Delete
-            </button>
+            <button className="delete-btn" onClick={() => handleDelete(u._id)}> Delete </button>
+            <button className="delete-btn" onClick={() => setUpdatingUser(u)}> Update</button>
           </div>
         ))}
       </div>
