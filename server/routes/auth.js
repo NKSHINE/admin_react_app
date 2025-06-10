@@ -36,7 +36,7 @@ router.post("/login", async (req, res) => {
   );
   res.json({ user });
   
-  console.log(res.data);
+  
   console.log(user.name);
   console.log(user.password);
   console.log(user.isAdmin);

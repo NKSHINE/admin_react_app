@@ -49,33 +49,63 @@ body {
 
 /* Container for AdminDashboard */
 .dashboard-container {
-  max-width: 600px;
+  max-width: 1000px; /* // UPDATED: widened for cards */
   margin: 60px auto;
   background-color: #ffffff;
   border: 2px solid #d0e6a5;
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  position: relative; /* // UPDATED: for absolute positioned logout */
 }
 
 /* Header text */
 .dashboard-container h2 {
   margin-bottom: 20px;
   color: #3a3a3a;
+  text-align: left; /* // UPDATED */
 }
 
-/* User list styles */
-.user-item {
+/* Search bar */
+.search-bar { /* // ADDED */
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  border: 1.5px solid #b2d8b2;
+  border-radius: 8px;
+  box-shadow: inset 1px 1px 4px rgba(178, 216, 178, 0.4);
+}
+
+/* User cards layout */
+.card-container { /* // ADDED */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Individual user card */
+.user-card { /* // ADDED */
   background-color: #f0f9f0;
-  margin-bottom: 10px;
-  padding: 15px;
-  border-radius: 6px;
   border: 1px solid #b2d8b2;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: left;
   box-shadow: 2px 2px 8px rgba(0, 128, 0, 0.05);
   color: #2e5d2e;
   font-weight: 500;
 }
 
+/* Delete button inside card */
+.delete-btn { /* // MOVED AND REUSED */
+  margin-top: 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
 /* Login Container using admin dashboard colors */
 .login-container {
@@ -113,14 +143,12 @@ body {
   transition: border-color 0.3s ease;
 }
 
-/* Input focus effect */
 .login-form input:focus {
   border-color: #7aba33;
   outline: none;
   box-shadow: 0 0 8px rgba(122, 186, 51, 0.6);
 }
 
-/* Submit button */
 .login-form button {
   padding: 12px;
   font-size: 1.1rem;
@@ -133,12 +161,10 @@ body {
   transition: background-color 0.3s ease;
 }
 
-/* Button hover effect */
 .login-form button:hover {
   background-color: #5e8b24;
 }
 
-/* Register Container (same style as login) */
 .register-container {
   max-width: 400px;
   margin: 80px auto;
@@ -151,20 +177,17 @@ body {
   color: #3a3a3a;
 }
 
-/* Header */
 .register-container h2 {
   margin-bottom: 25px;
   font-weight: 600;
 }
 
-/* Form styling */
 .register-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* Input fields */
 .register-form input {
   padding: 12px 15px;
   font-size: 1rem;
@@ -174,14 +197,12 @@ body {
   transition: border-color 0.3s ease;
 }
 
-/* Input focus effect */
 .register-form input:focus {
   border-color: #7aba33;
   outline: none;
   box-shadow: 0 0 8px rgba(122, 186, 51, 0.6);
 }
 
-/* Submit button */
 .register-form button {
   padding: 12px;
   font-size: 1.1rem;
@@ -194,19 +215,16 @@ body {
   transition: background-color 0.3s ease;
 }
 
-/* Button hover effect */
 .register-form button:hover {
   background-color: #5e8b24;
 }
 
-/* Link below form */
 .register-container p {
   margin-top: 20px;
   color: #3a3a3a;
   font-size: 0.95rem;
 }
 
-/* Style the link */
 .register-container p a {
   color: #7aba33;
   text-decoration: none;
@@ -217,7 +235,6 @@ body {
   text-decoration: underline;
 }
 
-/* UserDashboard container */
 .userdashboard-container {
   max-width: 400px;
   margin: 80px auto;
@@ -230,14 +247,12 @@ body {
   color: #3a3a3a;
 }
 
-/* Header */
 .userdashboard-container h2 {
   margin-bottom: 25px;
   font-weight: 600;
   padding: 12px 150px;
 }
 
-/* Form-like layout for inputs and button */
 .userdashboard-container input {
   display: block;
   width: 100%;
@@ -256,7 +271,6 @@ body {
   box-shadow: 0 0 8px rgba(122, 186, 51, 0.6);
 }
 
-/* Update button */
 .userdashboard-container button {
   width: 100%;
   padding: 12px;
@@ -275,6 +289,7 @@ body {
 }
 
 .logout-container {
+  
   position: absolute;
   top: 10px;
   right: 10px;

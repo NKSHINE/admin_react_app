@@ -4,7 +4,7 @@ import axios from "axios";
 function UserDashboard({ user,setUser }) {
   const [name, setName] = useState(user.name);
   const [address, setAddress] = useState(user.address);
-  const [users, setUsers] = useState([]);
+  
 
   const update = () => {
     axios.put("http://localhost:5000/api/update", {
@@ -14,26 +14,26 @@ function UserDashboard({ user,setUser }) {
     }).then(() => alert("Details updated"));
   };
   const handleLogout = async () => {
-      try {
-        await axios.post("http://localhost:5000/api/logout", {}, );
-        setUser(null);
-      } catch (err) {
-        
-        
-        alert(err);
-      }
-    };
+    try {
+      await axios.post("http://localhost:5000/api/logout", {}, );
+      setUser(null);
+    } catch (err) {
+      
+      
+      alert(err);
+    }
+  };
 
   return (
     <div className="userdashboard-container">
-      <h2>User Dashboard</h2>
+      <h2>Welcome {user.name}</h2>
       
       <input value={name} onChange={e => setName(e.target.value)} />
       <input value={address} onChange={e => setAddress(e.target.value)} />
       <button onClick={update}>Update</button>
       <div className="logout-container">
         <button className="logout-button" onClick={handleLogout}>Logout</button>
-    </div>
+      </div>
     </div>
   );
 }

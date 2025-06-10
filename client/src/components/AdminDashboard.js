@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import "../App.css";
 
+
+
 function AdminDashboard({ user, setUser }) {
   const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState("");
 
-  const fetchUsers = () => {
+  const fetchUsers = useCallback(() => {
     axios
       .get(
         `http://localhost:5000/api/users?email=${encodeURIComponent(
@@ -14,11 +17,12 @@ function AdminDashboard({ user, setUser }) {
       )
       .then((res) => setUsers(res.data))
       .catch(() => alert("Unauthorized or error fetching users."));
-  };
+  }, [user.email, user.isAdmin]);
 
   useEffect(() => {
     fetchUsers();
-  }, [user]);
+  }, [fetchUsers]);
+
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
@@ -28,7 +32,7 @@ function AdminDashboard({ user, setUser }) {
         })
         .then(() => {
           alert("User deleted");
-          fetchUsers(); // Refresh list
+          fetchUsers();
         })
         .catch(() => alert("Failed to delete user"));
     }
@@ -36,43 +40,51 @@ function AdminDashboard({ user, setUser }) {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:5000/api/logout", {}, );
+      await axios.post("http://localhost:5000/api/logout");
       setUser(null);
     } catch (err) {
-      
-      
       alert(err);
     }
   };
 
+  const filteredUsers = users.filter((u) =>
+    [u.name, u.email, u.address].some((field) =>
+      field.toLowerCase().includes(search.toLowerCase())
+    )
+  );
+
   return (
     <div className="dashboard-container">
-      <h2>Admin: All Users</h2>
-      <div className="logout-container">
-         <button className="logout-button" onClick={handleLogout}>Logout</button>
+      <div className="top-bar">
+        <h2>Welcome {user.name}</h2>
+        <div className="logout-container">
+          <button className="logout-button" onClick={handleLogout}>Logout</button>
+        </div>
       </div>
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {users.map((u) => (
-          <li className="user-item" key={u._id}>
-            {u.name} | {u.email} | {u.address}
+      <input
+        type="text"
+        placeholder="Search by name, email or address"
+        className="search-bar"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <div className="card-container">
+        {filteredUsers.map((u) => (
+          <div className="user-card" key={u._id}>
+            <p><strong>Name:</strong> {u.name}</p>
+            <p><strong>Email:</strong> {u.email}</p>
+            <p><strong>Address:</strong> {u.address}</p>
             <button
               className="delete-btn"
               onClick={() => handleDelete(u._id)}
-              style={{
-                marginLeft: "10px",
-                color: "white",
-                backgroundColor: "red",
-                border: "none",
-                padding: "5px 10px",
-                cursor: "pointer",
-              }}
             >
               Delete
             </button>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
