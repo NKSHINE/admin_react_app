@@ -20,7 +20,7 @@ function Login() {
   }
 
   try {
-    const res = await axios.post("http://localhost:5000/api/login", form);
+    const res = await axios.post("http://localhost:5000/api/login", form,{ withCredentials: true });
     setUser(res.data.user);
   } catch (error) {
     alert("Login failed. Please check your credentials.");
@@ -28,8 +28,8 @@ function Login() {
 };
 
 
-  if (user?.isAdmin) return <AdminDashboard user={user} />;
-  else if (user) return <UserDashboard user={user} />;
+  if (user?.isAdmin) return <AdminDashboard user={user} setUser={setUser} />;
+  else if (user) return <UserDashboard user={user}  setUser={setUser} />;
 
   return (
     <div className="login-container">
