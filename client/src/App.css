@@ -310,3 +310,11 @@ body {
 .logout-button:hover {
   background-color: #e60000;
 }
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+
+

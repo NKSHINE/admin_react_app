@@ -1,9 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import AdminDashboard from "./AdminDashboard";
+import UserDashboard from "./UserDashboard";
 
 function Register() {
   const [form, setForm] = useState({ name: "", address: "", email: "", password: "" });
+  
+  const [user, setUser] = useState(null);
   const [message, setMessage] = useState("");
   const [messageColor, setMessageColor] = useState("");
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,9 +23,11 @@ function Register() {
     }
   
     try {
-      await axios.post("http://localhost:5000/api/register", form);
+      const res = await axios.post("http://localhost:5000/api/register", form);
+      setUser(res.data); // ✅ Set user to trigger redirection
       setMessage("Registered successfully!");
       setMessageColor("green");
+      
 
     } catch (error) {
       setMessage("Registration failed. Please try again.");
@@ -29,6 +35,8 @@ function Register() {
     }
   };
 
+  if (user?.isAdmin) return <AdminDashboard user={user} setUser={setUser} />;
+  else if (user) return <UserDashboard user={user}  setUser={setUser} />;
 
   return (
     <div className="register-container">

@@ -12,7 +12,8 @@ router.post("/register", async (req, res) => {
     const isAdmin = email === "neethukshine@gmail.com";
     const user = new User({ name, address, email, password: hashed, isAdmin });
     await user.save();
-    res.status(201).json({ message: "Registered successfully" });
+    
+    res.status(201).json(user);
   } catch (err) {
     res.status(400).json({ error: "Email already exists" });
   }
